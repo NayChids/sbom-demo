@@ -1,0 +1,2 @@
+$env:PATH = "C:\Users\HomePC\.local\bin;$env:PATH
+

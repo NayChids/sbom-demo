@@ -1,0 +1,19 @@
+   name: SBOM and scan
+   on: [push]
+   jobs:
+     sbom:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-python@v5
+           with:
+             python-version: '3.11'
+         - run: pip install cyclonedx-bom pip-audit
+         - run: cyclonedx-py requirements requirements.txt -o sbom.json
+         - run: pip-audit -r requirements.txt -f cyclonedx-json -o audit-sbom.json || true
+         - uses: actions/upload-artifact@v4
+           with:
+             name: sbom-results
+             path: |
+               sbom.json
+               audit-sbom.json
